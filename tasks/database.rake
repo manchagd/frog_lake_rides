@@ -11,11 +11,24 @@ namespace :db do
   end
 
 	task create: :environment do
-    puts "DB [created], and [droped] if exists.[#{ENV["RACK_ENV"]}]"
+    puts "DB [created].[#{ENV["RACK_ENV"]}]"
+    database_credentials = db_yaml[ENV["RACK_ENV"]]
+    begin 
+      Sequel.connect(database_credentials)
+    rescue => e
+      Sequel.connect(database_credentials.merge('database' => 'postgres')) do |db|
+        db.execute "CREATE DATABASE #{database_credentials['database']}"
+      end
+    else
+      puts "DB [#{database_credentials['database']}] already exists."
+    end
+	end
+
+  task destroy: :environment do
+    puts "DB [droped] if exists.[#{ENV["RACK_ENV"]}]"
     database_credentials = db_yaml[ENV["RACK_ENV"]]
     Sequel.connect(database_credentials.merge('database' => 'postgres')) do |db|
       db.execute "DROP DATABASE IF EXISTS #{database_credentials['database']}"
-      db.execute "CREATE DATABASE #{database_credentials['database']}"
     end
 	end
 
