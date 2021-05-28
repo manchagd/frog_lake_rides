@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: 5
+
+development:
+  <<: *default
+  user: postgres
+  password: admin
+  database: frog_lake_rides
+
+production:
+  <<: *default
+  user: postgres
+  password: postgres
+  database: frog_lake_rides
