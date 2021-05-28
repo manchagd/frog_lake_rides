@@ -13,6 +13,6 @@ development:
 
 production:
   <<: *default
-  user: postgres
-  password: postgres
+  user: frog-lake-rides
+  password: <%= ENV['FROG_LAKE_RIDES_DATABASE_PASSWORD'] %>
   database: frog_lake_rides
